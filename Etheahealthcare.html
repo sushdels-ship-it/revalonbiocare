@@ -97,5 +97,207 @@
       font-size:14px;
     }
 
-    /* Three vertical blocks (Vision /
+    /* Three vertical blocks (Vision / Mission / Statement) */
+    .three-blocks{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:16px;
+      margin-bottom:24px;
+    }
+    .card{
+      background:var(--card-bg);
+      border-radius:10px;
+      padding:16px;
+      box-shadow:0 6px 18px rgba(16,24,40,0.04);
+      min-height:140px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .card h3{ margin:0; color:var(--accent); font-size:18px; }
+    .card p{ margin:0; color:var(--muted); font-size:14px; }
 
+    /* Portfolio 5 items */
+    .portfolio{
+      margin-top:8px;
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap:16px;
+      align-items:start;
+    }
+    .portfolio .pf-card{
+      background:linear-gradient(180deg,#fff,#fcfeff);
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 8px 24px rgba(11,114,133,0.04);
+      border:1px solid rgba(11,114,133,0.04);
+      display:flex;
+      flex-direction:column;
+      min-height:220px;
+    }
+    .pf-card img{
+      width:100%;
+      height:140px;
+      object-fit:cover;
+      display:block;
+    }
+    .pf-content{
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      flex:1;
+    }
+    .pf-content h4{ margin:0; font-size:16px; color:#0b7285; }
+    .pf-content p{ margin:0; font-size:13px; color:var(--muted); flex:1; }
+
+    /* Section headings */
+    .section-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:12px 0;
+    }
+    .section-title h2{ margin:0; font-size:20px; color:#123a3f; }
+    .section-title p{ margin:0; font-size:13px; color:var(--muted); }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .page{
+        grid-template-columns: 1fr;
+      }
+      .side-menu{
+        position:relative;
+        top:0;
+        flex-direction:row;
+        gap:8px;
+        padding:10px;
+        overflow:auto;
+        margin-bottom:12px;
+      }
+      .menu-btn{ white-space:nowrap; padding:8px 10px; font-size:14px; }
+      .three-blocks{ grid-template-columns: 1fr; }
+      .hero img{ height:220px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <main>
+      <!-- About Us / Main hero -->
+      <section id="about-us" class="hero" aria-labelledby="aboutusTitle">
+        <img src="https://images.unsplash.com/photo-1586773860413-3d4e2b2a6a91?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=7e5d5b0d7d2b3a7fb5b8c51a2d2d9e8a" alt="Ethea Healthcare company building and staff">
+        <div class="caption">
+          <strong id="aboutusTitle">Ethea Healthcare</strong> — Caring through innovation. This main hero displays a representative company image.
+        </div>
+      </section>
+
+      <!-- Three vertical blocks: Vision / Mission / Statement -->
+      <section id="about" aria-labelledby="aboutTitle">
+        <div class="section-title">
+          <h2 id="aboutTitle">Our Core</h2>
+          <p>Vision, Mission and Statement at a glance</p>
+        </div>
+
+        <div class="three-blocks">
+          <article class="card" aria-labelledby="visionTitle">
+            <h3 id="visionTitle">Vision</h3>
+            <p>To be the leading center for compassionate, evidence-based medical care, empowering healthier lives across communities.</p>
+          </article>
+
+          <article class="card" aria-labelledby="missionTitle">
+            <h3 id="missionTitle">Mission</h3>
+            <p>Deliver high-quality, accessible healthcare using innovative approaches, patient-centered service and multidisciplinary expertise.</p>
+          </article>
+
+          <article class="card" aria-labelledby="statementTitle">
+            <h3 id="statementTitle">Statement</h3>
+            <p>We commit to safety, dignity and transparency in all interactions, continuously improving outcomes through learning and collaboration.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Portfolio section (career mapped here as area for medical portfolio) -->
+      <section id="carrer" aria-labelledby="careerTitle">
+        <div class="section-title">
+          <h2 id="careerTitle">Medical Portfolio</h2>
+          <p>Explore 5 key service areas with short descriptions</p>
+        </div>
+
+        <div class="portfolio">
+          <article class="pf-card">
+            <img src="https://images.unsplash.com/photo-1582719478179-2a6f3c0e2d9e?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=7f2bb8e5e3f9a6f4d2b3c1a4df3f1b2e" alt="Cardiology imaging">
+            <div class="pf-content">
+              <h4>Cardiology</h4>
+              <p>Advanced cardiac diagnostics and minimally invasive interventions to treat a range of heart conditions.</p>
+            </div>
+          </article>
+
+          <article class="pf-card">
+            <img src="https://images.unsplash.com/photo-1580338949764-3b5b2f0c1d3b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=aa7b6e5d3c2b6c8d7f3e2b1c0f4a5a6b" alt="Orthopedics care">
+            <div class="pf-content">
+              <h4>Orthopedics</h4>
+              <p>Comprehensive bone and joint care including surgical and non-surgical treatment plans tailored for recovery.</p>
+            </div>
+          </article>
+
+          <article class="pf-card">
+            <img src="https://images.unsplash.com/photo-1587502537745-8d6e518d9f9b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9b6c4a7f5d3e2b4a6c8f1d2e3a0b1c2d" alt="Pediatrics clinic">
+            <div class="pf-content">
+              <h4>Pediatrics</h4>
+              <p>Child-centered care from newborn screening to adolescent wellness and immunization services.</p>
+            </div>
+          </article>
+
+          <article class="pf-card">
+            <img src="https://images.unsplash.com/photo-1580281657526-9dbe4b0f2b6b?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=5c2b4d6a8e7f9b0c1a2d3e4b5f6a7c8d" alt="Radiology equipment">
+            <div class="pf-content">
+              <h4>Radiology</h4>
+              <p>High-resolution imaging and minimally invasive image-guided procedures to support accurate diagnoses.</p>
+            </div>
+          </article>
+
+          <article class="pf-card">
+            <img src="https://images.unsplash.com/photo-1580281657520-3e3f7c5d9b8f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=1f2e3d4c5b6a7988a7b6c5d4e3f2a1b0" alt="Oncology treatment">
+            <div class="pf-content">
+              <h4>Oncology</h4>
+              <p>Integrated oncology services including chemo, targeted therapies and supportive care focused on quality of life.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Right-side vertical menu -->
+    <aside class="side-menu" aria-label="Quick navigation">
+      <div class="menu-title">Quick Links</div>
+      <a class="menu-btn" href="#about">about</a>
+      <a class="menu-btn" href="#carrer">carrer</a>
+      <a class="menu-btn" href="#about-us">about us</a>
+    </aside>
+  </div>
+
+  <script>
+    // Optional: smooth scroll for anchor clicks
+    (function(){
+      if('scrollBehavior' in document.documentElement.style === false){
+        // polyfill not included - modern browsers handle smooth scroll via CSS usually
+      }
+      document.querySelectorAll('a[href^="#"]').forEach(function(a){
+        a.addEventListener('click', function(e){
+          // keep default if modifier keys used
+          if(e.metaKey || e.ctrlKey) return;
+          e.preventDefault();
+          var target = document.querySelector(this.getAttribute('href'));
+          if(target){
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+            // update hash without jumping
+            history.replaceState(null, '', this.getAttribute('href'));
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
