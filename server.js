@@ -33,7 +33,7 @@ app.post('/api/send-email', async (req, res) => {
   });
 
   const mailOptions = {
-    from: user,
+    from: `"Customer Query" <${user}>`,
     to,
     subject: `New message from ${name}`,
     html: `Name: ${name} <br> Email: ${email} <br> Message: ${message}`
