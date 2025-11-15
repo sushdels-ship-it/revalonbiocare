@@ -159,6 +159,35 @@
             .company-info-grid { grid-template-columns: 1fr; }
             .company-info-grid .info-icon { bottom: -18px; width: 48px; height: 48px; }
         }
+
+        /*code for araaning the title image and text side by side*/
+        .company-intro {
+            display: flex;
+            align-items: center;      /* Vertically center text with image */
+            gap: 30px;                /* Space between image and text */
+            flex-wrap: wrap;          /* Wrap on small screens */
+        }
+
+        /* Image styling */
+        .company-intro .intro-image img {
+            max-width: 300px;         /* Adjust size */
+            width: 100%;
+            height: auto;
+            border-radius: 8px;       /* Optional rounded corners */
+        }
+
+        /* Text styling */
+        .company-intro .intro-text {
+            flex: 1;                  /* Take remaining space */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .company-intro {
+                flex-direction: column; /* Stack image above text on small screens */
+                text-align: center;
+            }
+        }
     </style>
 </head>
 
@@ -200,11 +229,19 @@
 
         <!-- Intro Section -->
         <section id="intro" class="wrapper style1 fullscreen fade-up">
-            <div class="inner">
-                <h1>Welcome To REVALON Biocare</h1>
-                <p>We are a young company where innovation meets integrity in healthcare. Guided by our tagline
-                    Revival to Resilience, we deliver high-quality, evidence-based pharmaceutical solutions.</p>
+        <div class="inner company-intro">
+            <div class="intro-image">
+                <img src="images/revalonbiocare.png" alt="REVALON Biocare" />
             </div>
+            <div class="intro-text">
+                <h1>Welcome To REVALON Biocare</h1>
+                <p>
+                    We are a young company where innovation meets integrity in healthcare. 
+                    Guided by our tagline <strong>Revival to Resilience</strong>, 
+                    we deliver high-quality, evidence-based pharmaceutical solutions.
+                </p>
+            </div>
+        </div>
             <div class="inner">
                 <h2>Company Information</h2>
                 <!-- 3 columns x 2 rows grid (6 cells). Each info cell uses .info-card; last cell is empty -->
@@ -212,31 +249,31 @@
                     <div class="info-card" role="row">
                         <h3>GST Number</h3>
                         <p>27ABLFR3528C1Z7</p>
-                        <div class="info-icon" aria-hidden="true"><span class="fa fa-code"></span></div>
+                        <div class="info-icon" aria-hidden="true"><span class="fa fa-file-invoice"></span></div>
                     </div>
 
                     <div class="info-card" role="row">
                         <h3>Business Type</h3>
                         <p>Pharmaceutical Company</p>
-                        <div class="info-icon" aria-hidden="true"><span class="fa fa-lock"></span></div>
+                        <div class="info-icon" aria-hidden="true"><span class="fa fa-briefcase"></span></div>
                     </div>
 
                     <div class="info-card" role="row">
                         <h3>Year Of Establishment</h3>
                         <p>2025</p>
-                        <div class="info-icon" aria-hidden="true"><span class="fa fa-cog"></span></div>
+                        <div class="info-icon" aria-hidden="true"><span class="fa fa-calendar"></span></div>
                     </div>
 
                     <div class="info-card" role="row">
                         <h3>Number Of Employees</h3>
                         <p>10</p>
-                        <div class="info-icon" aria-hidden="true"><span class="fa fa-desktop"></span></div>
+                        <div class="info-icon" aria-hidden="true"><span class="fa fa-users"></span></div>
                     </div>
 
                     <div class="info-card" role="row">
                         <h3>Number Of Products</h3>
                         <p>5</p>
-                        <div class="info-icon" aria-hidden="true"><span class="fa fa-link"></span></div>
+                        <div class="info-icon" aria-hidden="true"><span class="fa fa-box"></span></div>
                     </div>
 
                     <!-- Sixth cell left empty to form a 3x2 grid like your design -->
