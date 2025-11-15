@@ -297,5 +297,22 @@
         }
         </script>
 
+		<!-- EmailJS Form Script -->
+		<script>
+		document.getElementById('contactForm').addEventListener('submit', function(e) {
+		e.preventDefault();
+
+		emailjs.send("service_0raocfi", "template_0xepm2f", {
+		from_name: document.getElementById('name').value,
+		from_email: document.getElementById('email').value,
+		message: document.getElementById('message').value
+		}).then(function() {
+		alert("Message sent successfully!");
+		}, function() {
+		alert("Failed to send message.");
+		});
+		});
+</script>
+
 	</body>
 </html>
