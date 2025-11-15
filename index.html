@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <!--
-	Hyperspace by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+    Hyperspace by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
 	<head>
@@ -10,11 +10,50 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>		
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
-
+        <style>
+            /* Slideshow CSS */
+            .slideshow-container {
+                width: 100%;
+                height: 400px;
+                position: relative;
+                overflow: hidden;
+            }
+            .slide {
+                display: none;
+                width: 100%;
+                height: 100%;
+            }
+            .slide img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .fade {
+                animation: fadeEffect 1.5s ease-in-out;
+            }
+            @keyframes fadeEffect {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        </style>
 	</head>
+
 	<body class="is-preload">
+
+        <!-- Slideshow at the top -->
+        <div class="slideshow-container">
+            <div class="slide fade">
+                <img src="images/slide1.jpg" alt="">
+            </div>
+            <div class="slide fade">
+                <img src="images/slide2.jpg" alt="">
+            </div>
+            <div class="slide fade">
+                <img src="images/slide3.jpg" alt="">
+            </div>
+        </div>
 
 		<!-- Sidebar -->
 			<section id="sidebar">
@@ -23,9 +62,8 @@
 						<ul>
 							<li><a href="#intro">Welcome</a></li>
 							<li><a href="#one">Who we are</a></li>
-							<li><a href="#two">What we do</a></li>						
+							<li><a href="#two">What we do</a></li>
 							<li><a href="#three">Get in touch</a></li>
-							
 						</ul>
 					</nav>
 				</div>
@@ -43,31 +81,22 @@
 								evidence-based pharmaceutical solutions. Our mission is to restore health 
 								and empower lives with trusted, effective, and accessible therapies. 
 								We don’t just heal we build strength for tomorrow </p>
-							<!--<ul class="actions">
-								<li><a href="#one" class="button scrolly">Learn more</a></li>
-							</ul>-->
 						</div>
+
 						<div class="inner">
 							<h2>Company Information</h2>
 							<div class="features">
-								<style>
-									.small-box {
-									max-width: 200px;
-									min-height: 20px;
-									}
-								</style>
 								<section>
 									<span class="icon solid major fa-code"></span>
-									<!--<a href="#" class="image"><img src="images/gst.png" alt="" data-position="center center" /></a>-->
 									<h3>GST Number</h3>
 									<p>27ABLFR3528C1Z7</p>
 								</section>
-									<section>
+								<section>
 									<span class="icon solid major fa-lock"></span>
 									<h3>Business Type</h3>
 									<p>Pharmaceutical Company</p>
 								</section>
-										<section>
+								<section>
 									<span class="icon solid major fa-cog"></span>
 									<h3>Year Of Establishment</h3>
 									<p>2025</p>
@@ -84,24 +113,23 @@
 								</section>
 							</div>	
 					</section>
+
 				<!-- One -->
 					<section id="one" class="wrapper style2 spotlights">
 						<section>
 							<a href="#" class="image"><img src="images/sachinbidwai.jpeg" alt="" data-position="center center" /></a>
 							<div class="content">
 								<div class="inner">
-									<h2>Dr Sachin Bidwai </h2>
+									<h2>Dr Sachin Bidwai</h2>
 									<span>General Physician<br />
 									Bachlors In Ayurvedic Medicines(B.A.M.S)<br />
 									Post Graduate Diploma In Generetic Medicines(P.G.D.G.M)<br />
 									A distinguished General Physician with over 15 years of clinical experience and a strong entrepreneurial vision<br />
-									</span>								
-									<!--<ul class="actions">
-										<li><a href="generic.html" class="button">Learn more</a></li>
-									</ul>-->
+									</span>
 								</div>
 							</div>
 						</section>
+
 						<section>
 							<a href="#" class="image"><img src="images/pathak.png" alt="" data-position="top center" /></a>
 							<div class="content">
@@ -110,13 +138,11 @@
 									<span>Marketing Expert<br />
 									Masters in Pharamacology(M Pharma) <br />									
 									A dedicated professional with 15 years of strong expertise in Clinical Research and pharmaceutical marketing.<br />
-									</span>	
-									<!--<ul class="actions">
-										<li><a href="generic.html" class="button">Learn more</a></li>
-									</ul>-->
+									</span>
 								</div>
 							</div>
 						</section>
+
 						<section>
 							<a href="#" class="image"><img src="images/Sushama.png" alt="" data-position="25% 25%" /></a>
 							<div class="content">
@@ -124,10 +150,7 @@
 									<h2>Mrs Sushama Delmade</h2>
 									<span>Bachlors In Computer Science(B.Sc)<br />
 									An accomplished financial consultant with more than 10 years of expriece in investing and fund raising
-									</span>	
-									<!--<ul class="actions">
-										<li><a href="generic.html" class="button">Learn more</a></li>-->
-									</ul>
+									</span>
 								</div>
 							</div>
 						</section>
@@ -235,7 +258,6 @@
 							</div>
 						</div>
 					</section>
-
 			</div>
 
 		<!-- Footer -->
@@ -255,6 +277,23 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+
+        <!-- Slideshow Script -->
+        <script>
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let slides = document.getElementsByClassName("slide");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }    
+            slides[slideIndex - 1].style.display = "block";  
+            setTimeout(showSlides, 3000);
+        }
+        </script>
 
 	</body>
 </html>
