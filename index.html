@@ -183,40 +183,41 @@
     }
     </script>
 
-    <!-- SMTP.js for Gmail -->
-    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <!-- Backend email submission: POSTs to /api/send-email -->
     <script>
-    document.getElementById('contactForm').addEventListener('submit', function(e){
+    document.getElementById('contactForm').addEventListener('submit', async function(e){
         e.preventDefault();
         const submitBtn = document.getElementById('submitBtn');
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
 
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
+        const payload = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            message: document.getElementById('message').value
+        };
 
-        Email.send({
-            Host: "smtp.gmail.com",
-            Username: "revelonbiocare@gmail.com",      // replace with your Gmail
-            Password: "icyvgvwbitxonpng",         // replace with your Gmail App Password
-            To: "revelonbiocare@gmail.com",            // recipient (can be same)
-            From: "revelonbiocare@gmail.com",
-            Subject: `New message from ${name}`,
-            Body: `Name: ${name} <br> Email: ${email} <br> Message: ${message}`
-        }).then(
-            message => {
-                alert("Message sent successfully!");
-                submitBtn.disabled = false;
-                submitBtn.textContent = "Send Message";
+        try {
+            const res = await fetch('/api/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json().catch(() => ({}));
+            if (res.ok) {
+                alert('Message sent successfully!');
                 document.getElementById('contactForm').reset();
+            } else {
+                console.error(data);
+                alert('Failed to send message: ' + (data.error || res.statusText));
             }
-        ).catch(err => {
+        } catch (err) {
             console.error(err);
-            alert("Failed to send message. Check console for details.");
+            alert('Failed to send message. Check console for details.');
+        } finally {
             submitBtn.disabled = false;
-            submitBtn.textContent = "Send Message";
-        });
+            submitBtn.textContent = 'Send Message';
+        }
     });
     </script>
 
