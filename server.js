@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
@@ -11,10 +13,12 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '/')));
 
 app.post('/api/send-email', async (req, res) => {
-  const { name, email, message, smtpUsername, smtpPassword } = req.body;
+  const { name, email, message, smtpUsername, smtpPassword, smtpHost, smtpPort } = req.body;
 
   const user = smtpUsername || process.env.SMTP_USERNAME;
   const pass = smtpPassword || process.env.SMTP_PASSWORD;
+  const host = smtpHost || process.env.SMTP_HOST || 'smtp.gmail.com';
+  const port = smtpPort || process.env.SMTP_PORT || 587;
   const to = process.env.TO_EMAIL || user;
 
   if (!user || !pass) {
@@ -22,9 +26,9 @@ app.post('/api/send-email', async (req, res) => {
   }
 
   const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
+    host,
+    port,
+    secure: port === 465,
     auth: { user, pass }
   });
 
