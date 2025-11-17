@@ -1,95 +1,291 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
-    <title>Revalon Biocare</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-    <style>
-        /* Responsive PDF container */
-        #pdf-container {
-            width: 100%;
-            max-width: 900px;
-            margin: 30px auto;
-        }
-        canvas {
-            display: block;
-            margin: 10px auto;
-            width: 100% !important;
-            height: auto !important;
-        }
-    </style>
-</head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Revalon Biocare — Horizontal PDF Viewer</title>
 
+  <!-- existing project CSS -->
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+  <style>
+    /* Basic page layout tweaks to keep your original site look */
+    body.is-preload { transition: none; }
+    header#header { z-index: 10; position: relative; }
+
+    /* PDF viewer container (horizontal) */
+    .pdf-viewer-wrapper {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 12px;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    /* Control buttons (prev/next) */
+    .pdf-controls {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      pointer-events: none;
+    }
+    .pdf-controls .btn {
+      pointer-events: auto;
+      position: absolute;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+    }
+    .pdf-controls .btn:active { transform: translateY(1px) scale(.99); }
+    .pdf-controls .prev { left: 8px; }
+    .pdf-controls .next { right: 8px; }
+
+    /* The horizontally scrolling area */
+    #pdf-container {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      align-items: center;
+      padding: 18px;
+      height: 72vh;         /* you can adjust this */
+      box-sizing: border-box;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+
+    /* Each page wrapper participates in snapping and prevents shrinking */
+    .page {
+      scroll-snap-align: center;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      padding: 8px;
+      border-radius: 6px;
+      box-shadow: 0 6px 18px rgba(16,24,40,0.05);
+      min-width: 160px;
+      box-sizing: border-box;
+    }
+
+    /* Canvas sizing: fit page height and keep aspect ratio */
+    .page canvas {
+      display: block;
+      height: 100%;
+      width: auto;
+      max-height: calc(72vh - 36px); /* leave padding room inside wrapper */
+      border-radius: 3px;
+    }
+
+    /* small screens */
+    @media (max-width: 900px) {
+      #pdf-container { height: 60vh; padding: 12px; gap: 10px; }
+      .page canvas { max-height: calc(60vh - 32px); }
+    }
+
+    /* fallback vertical container (if JS disabled) */
+    .no-js #pdf-container {
+      display: block;
+      height: auto;
+    }
+  </style>
+</head>
 <body class="is-preload">
 
-    <!-- Header -->
-    <header id="header">
-        <a href="index.html" class="title">REVALON Biocare</a>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="generic.html" class="active">Product Details</a></li>
-            </ul>
-        </nav>
-    </header>
+  <!-- Header (keeps your original nav) -->
+  <header id="header">
+      <a href="index.html" class="title">REVALON Biocare</a>
+      <nav>
+          <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="generic.html" class="active">Product Details</a></li>
+          </ul>
+      </nav>
+  </header>
 
-    <div id="wrapper">
-        <section id="main" class="wrapper">
-            <div class="inner">
-                <h1 class="major">Product Details</h1>        
+  <div id="wrapper">
+    <section id="main" class="wrapper">
+      <div class="inner">
+        <h1 class="major">Product Details</h1>
 
-                <!-- PDF Viewer using PDF.js -->
-                <div id="pdf-container"></div>
-            </div>
-        </section>
-    </div>
+        <!-- NEW: horizontal PDF viewer container -->
+        <div class="pdf-viewer-wrapper" aria-label="PDF viewer">
+          <div class="pdf-controls" aria-hidden="false">
+            <button class="btn prev" id="prevBtn" title="Previous">◀</button>
+            <button class="btn next" id="nextBtn" title="Next">▶</button>
+          </div>
 
-    <footer id="footer" class="wrapper alt">
-        <div class="inner">
-            <ul class="menu">
-                <li>&copy; All rights reserved.</li>
-            </ul>
+          <div id="pdf-container" role="region" aria-label="PDF pages (horizontal)"></div>
         </div>
-    </footer>
 
-    <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
+      </div>
+    </section>
+  </div>
 
-    <!-- PDF.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.min.js"></script>
-    <script>
-        const url = 'assets/Files/Revalon_Biocare.pdf';
-        const container = document.getElementById('pdf-container');
+  <footer id="footer" class="wrapper alt">
+    <div class="inner">
+      <ul class="menu">
+        <li>&copy; All rights reserved.</li>
+      </ul>
+    </div>
+  </footer>
 
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.worker.min.js';
+  <!-- existing scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.scrollex.min.js"></script>
+  <script src="assets/js/jquery.scrolly.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
 
-        pdfjsLib.getDocument(url).promise.then(pdf => {
-            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-                pdf.getPage(pageNum).then(page => {
-                    const viewport = page.getViewport({ scale: 1 });
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-                    container.appendChild(canvas);
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.min.js"></script>
 
-                    const renderContext = { canvasContext: context, viewport: viewport };
-                    page.render(renderContext);
-                });
-            }
-        }).catch(err => {
-            container.innerHTML = "<p style='color:red;'>Failed to load PDF. Please try again.</p>";
-            console.error(err);
-        });
-    </script>
+  <script>
+    // Path to your PDF
+    const url = 'assets/Files/Revalon_Biocare.pdf';
 
+    // Elements
+    const container = document.getElementById('pdf-container');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // PDF.js worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.worker.min.js';
+
+    // Device pixel ratio for crisp canvases
+    const DPR = window.devicePixelRatio || 1;
+
+    // Load the document
+    pdfjsLib.getDocument(url).promise.then(async pdf => {
+      const pageCount = pdf.numPages;
+
+      // Create wrappers so scroll-snap works instantly (placeholders)
+      for (let i = 1; i <= pageCount; i++) {
+        const pageWrapper = document.createElement('div');
+        pageWrapper.className = 'page';
+        pageWrapper.dataset.page = i;
+
+        const canvas = document.createElement('canvas');
+        canvas.dataset.page = i;
+        // append canvas to wrapper and wrapper to container
+        pageWrapper.appendChild(canvas);
+        container.appendChild(pageWrapper);
+      }
+
+      // Render pages sequentially (keeps memory reasonable)
+      for (let i = 1; i <= pageCount; i++) {
+        // render one page at a time
+        await renderPage(pdf, i);
+      }
+    }).catch(err => {
+      container.innerHTML = "<p style='color:red;padding:16px;'>Failed to load PDF. Please check the file path or network.</p>";
+      console.error(err);
+    });
+
+    // Render a page to its canvas fitting the viewer height
+    async function renderPage(pdf, pageNumber) {
+      const page = await pdf.getPage(pageNumber);
+      const wrapper = container.querySelector(`.page[data-page="${pageNumber}"]`);
+      const canvas = wrapper.querySelector('canvas');
+      const ctx = canvas.getContext('2d');
+
+      // Fit page height to container's height (leaving wrapper padding)
+      const containerHeight = container.clientHeight - 24; // a little padding allowance
+      const viewportUnscaled = page.getViewport({ scale: 1 });
+      const baseScale = containerHeight / viewportUnscaled.height;
+      const scale = baseScale; // you can multiply by zoom factor if needed
+
+      const viewport = page.getViewport({ scale });
+      // set canvas resolution for DPR
+      canvas.width = Math.round(viewport.width * DPR);
+      canvas.height = Math.round(viewport.height * DPR);
+      canvas.style.width = Math.round(viewport.width) + 'px';
+      canvas.style.height = Math.round(viewport.height) + 'px';
+
+      // make drawing crisp on high-DPI screens
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      await page.render({ canvasContext: ctx, viewport }).promise;
+    }
+
+    // Prev / Next behavior: scroll by container width
+    function scrollNext() {
+      container.scrollBy({ left: container.clientWidth, behavior: 'smooth' });
+    }
+    function scrollPrev() {
+      container.scrollBy({ left: -container.clientWidth, behavior: 'smooth' });
+    }
+
+    prevBtn.addEventListener('click', scrollPrev);
+    nextBtn.addEventListener('click', scrollNext);
+
+    // Keyboard support
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { scrollNext(); e.preventDefault(); }
+      if (e.key === 'ArrowLeft')  { scrollPrev();  e.preventDefault(); }
+    });
+
+    // Resize: re-render canvases to match new height (debounced)
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        // re-render all visible canvases (or all canvases for simplicity)
+        const canvases = container.querySelectorAll('canvas');
+        // if pdf data is not loaded yet, bail
+        if (!pdfjsLib || canvases.length === 0) return;
+        // Reload PDF and re-render canvases with new sizes
+        // We re-fetch the document to get page objects (cheap when cached)
+        pdfjsLib.getDocument(url).promise.then(async pdf => {
+          for (let i = 0; i < canvases.length; i++) {
+            const pageNumber = i + 1;
+            await renderPage(pdf, pageNumber);
+          }
+        }).catch(err => console.error(err));
+      }, 180);
+    });
+
+    // Optional: simple swipe gesture for quick navigation (touch)
+    (function setupTouchSwipe(){
+      let startX = null, startTime = 0;
+      container.addEventListener('touchstart', e => {
+        if (e.touches.length === 1) {
+          startX = e.touches[0].clientX;
+          startTime = Date.now();
+        }
+      }, {passive:true});
+      container.addEventListener('touchend', e => {
+        if (startX === null) return;
+        const dx = e.changedTouches[0].clientX - startX;
+        const dt = Date.now() - startTime;
+        if (dt < 400 && Math.abs(dx) > 50) {
+          if (dx < 0) scrollNext(); else scrollPrev();
+        }
+        startX = null;
+      }, {passive:true});
+    })();
+  </script>
+
+  <!-- Add 'no-js' fallback class if JS disabled (optional) -->
+  <script>document.documentElement.classList.remove('no-js');</script>
 </body>
 </html>
