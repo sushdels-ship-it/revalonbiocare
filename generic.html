@@ -3,33 +3,28 @@
 <head>
     <title>Revalon Biocare</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
     <style>
-        /* Make iframe responsive */
+        /* Responsive PDF container */
         .pdf-container {
-            position: relative;
             width: 100%;
-            aspect-ratio: 16 / 9; /* Maintains a 16:9 ratio, adjust if needed */
+            max-width: 100%;
             margin-top: 30px;
-            overflow: hidden;
         }
 
         .pdf-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
+            min-height: 80vh; /* occupies most of viewport height */
             border: none;
         }
 
-        /* Optional: adjust aspect ratio for mobile */
+        /* Optional: smaller height for very small devices */
         @media (max-width: 480px) {
-            .pdf-container {
-                aspect-ratio: 4 / 3; /* better for portrait mobile screens */
+            .pdf-container iframe {
+                min-height: 60vh;
             }
         }
     </style>
@@ -57,7 +52,7 @@
                 <!-- Responsive PDF Viewer -->
                 <div class="pdf-container">
                     <iframe 
-                        src="assets/Files/Revalon_Biocare.pdf#toolbar=0" 
+                        src="assets/Files/Revalon_Biocare.pdf#toolbar=0&view=FitH" 
                         frameborder="0"
                         allowfullscreen>
                     </iframe>
