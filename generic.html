@@ -3,29 +3,21 @@
 <head>
     <title>Revalon Biocare</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-
     <style>
         /* Responsive PDF container */
-        .pdf-container {
+        #pdf-container {
             width: 100%;
-            max-width: 100%;
-            margin-top: 30px;
+            max-width: 900px;
+            margin: 30px auto;
         }
-
-        .pdf-container iframe {
-            width: 100%;
-            min-height: 80vh; /* occupies most of viewport height */
-            border: none;
-        }
-
-        /* Optional: smaller height for very small devices */
-        @media (max-width: 480px) {
-            .pdf-container iframe {
-                min-height: 60vh;
-            }
+        canvas {
+            display: block;
+            margin: 10px auto;
+            width: 100% !important;
+            height: auto !important;
         }
     </style>
 </head>
@@ -43,25 +35,17 @@
         </nav>
     </header>
 
-    <!-- Main wrapper -->
     <div id="wrapper">
         <section id="main" class="wrapper">
             <div class="inner">
-                <h1 class="major">Product Details</h1>		
+                <h1 class="major">Product Details</h1>        
 
-                <!-- Responsive PDF Viewer -->
-                <div class="pdf-container">
-                    <iframe 
-                        src="assets/Files/Revalon_Biocare.pdf#toolbar=0&view=FitH" 
-                        frameborder="0"
-                        allowfullscreen>
-                    </iframe>
-                </div>
+                <!-- PDF Viewer using PDF.js -->
+                <div id="pdf-container"></div>
             </div>
         </section>
     </div>
 
-    <!-- Footer -->
     <footer id="footer" class="wrapper alt">
         <div class="inner">
             <ul class="menu">
@@ -78,6 +62,34 @@
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
+
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.min.js"></script>
+    <script>
+        const url = 'assets/Files/Revalon_Biocare.pdf';
+        const container = document.getElementById('pdf-container');
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.worker.min.js';
+
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                pdf.getPage(pageNum).then(page => {
+                    const viewport = page.getViewport({ scale: 1 });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    container.appendChild(canvas);
+
+                    const renderContext = { canvasContext: context, viewport: viewport };
+                    page.render(renderContext);
+                });
+            }
+        }).catch(err => {
+            container.innerHTML = "<p style='color:red;'>Failed to load PDF. Please try again.</p>";
+            console.error(err);
+        });
+    </script>
 
 </body>
 </html>
