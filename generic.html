@@ -19,6 +19,10 @@
             body {
               padding-top: 80px; /* Adjust to header height */
             }
+
+            h1.major {
+              font-weight: normal; /* removes bold */
+            }
     
     /* ---- FIXED SIDEBAR BACKGROUND ---- */
     /* This ensures the sidebar matches the page background instead of being black/white */
@@ -122,19 +126,22 @@
       cursor: pointer;
       border: none !important;
       width: 100%;
-      text-align: left;
-      font-weight: 500;
+      text-align: left;      
       font-size: 1.05rem;
       margin-bottom: 0;
       padding: 14px 16px 14px 0;
       position: relative;
       transition: background 0.21s;
       letter-spacing: 0.02em;
+      font-weight: normal !important; /* removes bold */
     }
+
+
     .collapsible span.collapsible-label {
       display: inline-block;
       border-bottom: 2px solid #36c1f5;
       padding-bottom: 2px;
+      font-weight: normal !important; /* removes bold */
     }
     .collapsible::after {
       content: '';
