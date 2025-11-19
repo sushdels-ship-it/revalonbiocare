@@ -134,7 +134,7 @@
       transition: background 0.21s;
       letter-spacing: 0.02em;
       font-weight: normal !important; /* removes bold */
-    }
+    }  
 
 
     .collapsible span.collapsible-label {
@@ -159,6 +159,18 @@
     .collapsible.active::after {
       transform: translateY(-50%) rotate(135deg);
     }
+    button.collapsible,
+    button.collapsible * {
+      -webkit-appearance: none; /* neutralize platform button style */
+      appearance: none;
+      font-family: inherit;     /* match surrounding font */
+      font-size: inherit;
+      line-height: inherit;
+      font-weight: 400 !important; /* force normal weight (400) */
+      font-style: normal !important;
+    }
+
+
     
     /* Nested child links */
     .nested.open { display: block; }
@@ -188,9 +200,62 @@
     
     /* Mobile */
     @media (max-width: 768px) {
-      #sidebar { display: none; }
+      #sidebar { display: blokc; }
       #wrapper { margin-left: 0; }
     }
+
+        /* Make PDF certificate section align with slider */
+    .pdf-block {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left: 0; /* matches slider left alignment */
+    }
+
+    /* Horizontal PDF list */
+    .pdf-horizontal {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .pdf-horizontal li {
+      position: relative;
+      padding-left: 12px;
+    }
+
+    /* Bullet separator */
+    .pdf-horizontal li::before {
+      content: "- ";
+      position: centered vertically;
+      left: 0;
+      color: #36c1f5;
+      font-size: 20px;
+      line-height: 0;
+    }
+
+    .pdf-horizontal a {
+      text-decoration: none;
+      color: #0aa2c0;
+      font-size: 1.08rem;
+      border-bottom: 1px solid #0aa2c0;
+      padding-bottom: 2px;
+    }
+
+    .pdf-horizontal a:hover {
+      opacity: 0.7;
+    }
+
+    /* Mobile behavior */
+    @media (max-width: 600px) {
+      .pdf-horizontal {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
 </style>
 
 </head>
@@ -210,7 +275,9 @@
   <div class="inner">
     <nav>
       <ul>
-        <li>
+          <li><a href="#intro">Product Details</a></li>
+          <li><a href="#one">Product Certificate</a></li>
+        <!--<li>        
           <button class="collapsible"><span class="collapsible-label">Product Certificate</span></button>
           <ul class="nested">
             <li><a href="assets/Files/Analysis_Cert/ESOGRED_Cert_Analysis.PDF" target="_blank">Esogred</a></li>
@@ -219,17 +286,16 @@
             <li><a href="assets/Files/Analysis_Cert/Argivion_Cert_Analysis.PDF" target="_blank">Argivion</a></li>
             <li><a href="assets/Files/Analysis_Cert/Luprest_Cert_Analysis.pdf" target="_blank">Luprest</a></li>
           </ul>
-        </li>
+        </li>-->
       </ul>
     </nav>
   </div>
 </section>
 
 <div id="wrapper">
-  <section id="main" class="wrapper">
+  <section id="intro" class="wrapper">
     <div class="inner">
       <h1 class="major">Product Details</h1>
-
       <div class="slider-wrapper">
         <div class="slider">
           <div class="slides" id="slideTrack">
@@ -251,13 +317,25 @@
   </section>
 </div>
 
-<footer id="footer" class="wrapper alt">
-  <div class="inner">
-    <ul class="menu">
-      <li>&copy; All rights reserved.</li>
+<section id="one" class="wrapper">
+  <div class="inner pdf-block">
+    
+    <h1 class="major">Product Certificates</h1>
+
+    <ul class="pdf-horizontal">
+      <li><a href="assets/Files/Analysis_Cert/ESOGRED_Cert_Analysis.PDF" target="_blank">Esogred Certificate</a></li>
+      <li><a href="assets/Files/Analysis_Cert/Fluqik_Cert_Analysis.pdf" target="_blank">Fluqik Certificate</a></li>
+      <li><a href="assets/Files/Analysis_Cert/VitriD3_Cert_Analysis.PDF" target="_blank">Vitri D3 Certificate</a></li>
+      <li><a href="assets/Files/Analysis_Cert/Argivion_Cert_Analysis.PDF" target="_blank">Argivion Certificate</a></li>
+      <li><a href="assets/Files/Analysis_Cert/Luprest_Cert_Analysis.pdf" target="_blank">Luprest Certificate</a></li>
     </ul>
+
   </div>
-</footer>
+</section>
+
+
+
+
 
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/jquery.scrollex.min.js"></script>
@@ -276,42 +354,47 @@ document.querySelectorAll(".collapsible").forEach(btn => {
 });
 </script>
 
-<script>
-const slides = document.querySelectorAll("#slideTrack img");
-const track = document.getElementById("slideTrack");
-const prev = document.getElementById("prevBtn");
-const next = document.getElementById("nextBtn");
-const dotsContainer = document.getElementById("dots");
+    <script>
+    const slides = document.querySelectorAll("#slideTrack img");
+    const track = document.getElementById("slideTrack");
+    const prev = document.getElementById("prevBtn");
+    const next = document.getElementById("nextBtn");
+    const dotsContainer = document.getElementById("dots");
 
-let index = 0;
-slides.forEach((_, i) => {
-  const dot = document.createElement("span");
-  dot.classList.add("dot");
-  if (i === 0) dot.classList.add("active");
-  dot.addEventListener("click", () => goToSlide(i));
-  dotsContainer.appendChild(dot);
-});
-const dots = document.querySelectorAll(".dot");
+    let index = 0;
+    slides.forEach((_, i) => {
+      const dot = document.createElement("span");
+      dot.classList.add("dot");
+      if (i === 0) dot.classList.add("active");
+      dot.addEventListener("click", () => goToSlide(i));
+      dotsContainer.appendChild(dot);
+    });
+    const dots = document.querySelectorAll(".dot");
 
-function updateSlider() {
-  track.style.transform = `translateX(-${index * 100}%)`;
-  dots.forEach(dot => dot.classList.remove("active"));
-  dots[index].classList.add("active");
-}
-function nextSlide() { index = (index + 1) % slides.length; updateSlider(); }
-function prevSlide() { index = (index - 1 + slides.length) % slides.length; updateSlider(); }
-function goToSlide(i) { index = i; updateSlider(); }
-next.addEventListener("click", nextSlide);
-prev.addEventListener("click", prevSlide);
+    function updateSlider() {
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach(dot => dot.classList.remove("active"));
+      dots[index].classList.add("active");
+    }
+    function nextSlide() { index = (index + 1) % slides.length; updateSlider(); }
+    function prevSlide() { index = (index - 1 + slides.length) % slides.length; updateSlider(); }
+    function goToSlide(i) { index = i; updateSlider(); }
+    next.addEventListener("click", nextSlide);
+    prev.addEventListener("click", prevSlide);
 
-let startX = 0;
-track.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-track.addEventListener("touchend", e => {
-  const diff = e.changedTouches[0].clientX - startX;
-  if (diff < -50) nextSlide();
-  if (diff > 50) prevSlide();
-});
-</script>
+    let startX = 0;
+    track.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+    track.addEventListener("touchend", e => {
+      const diff = e.changedTouches[0].clientX - startX;
+      if (diff < -50) nextSlide();
+      if (diff > 50) prevSlide();
+    });
+    </script>
+
+    <!-- Footer -->
+    <footer id="footer" class="wrapper style1-alt">
+        <div class="inner"><ul class="menu"><li>&copy; All rights reserved.</li></ul></div>
+    </footer>
 
 </body>
 </html>
