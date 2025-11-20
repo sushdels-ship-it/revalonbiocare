@@ -7,7 +7,27 @@
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
+    <!-- this code make the headers always stay allinged -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const header = document.getElementById("header");
+            const headerHeight = header.offsetHeight;
+
+            // Set padding for body (to prevent overlap)
+            document.body.style.paddingTop = headerHeight + "px";
+
+            // Align sidebar
+            const sidebar = document.getElementById("sidebar");
+            sidebar.style.marginTop = headerHeight + 20 + "px"; // extra spacing
+            
+            // Align slideshow
+            const slideshow = document.querySelector(".slideshow-container");
+            slideshow.style.marginTop = (headerHeight + 10) + "px";
+        });
+    </script>
+
     <style>
+
         /* Freeze header  CSS */
         header#header {
               position: fixed;
@@ -16,13 +36,18 @@
               width: 100%;
               z-index: 100;
             }
-            body {
-              padding-top: 120px; /* Adjust to header height */
-            }
-           /* Sidebar */
+
             #sidebar {
-                margin-top: 100px !important; /* Adjust the value as needed */
+            position: fixed;
+            left: 0;       
+            width: 390px;
+            height: 100%;
+            background: #312450;   /* MATCH PAGE BACKGROUND */
+    
+            box-shadow: none !important;
+            z-index: 1000;
             }
+
         /* Slideshow CSS */
         .slideshow-container {
             width: 100%;
@@ -249,6 +274,27 @@
             border-radius: 8px; /* optional */
             object-fit: cover;   /* optional, crops image if needed */
             }
+
+            #intro {
+                background: #312450 /* same as sidebar */
+                         /* ensures text is readable on dark background */
+            }
+            #one {
+                background: #312450 /* same as sidebar */
+                         /* ensures text is readable on dark background */
+            }
+            #two {
+                background: #312450 /* same as sidebar */
+                         /* ensures text is readable on dark background */
+            }
+            #three {
+                background: #312450 /* same as sidebar */
+                         /* ensures text is readable on dark background */
+            }
+            #footer {
+                background-color: #312450;
+            }
+            
     </style>
 </head>
 
