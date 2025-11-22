@@ -7,44 +7,45 @@
     <link rel="stylesheet" href="assets/css/main.css?v=2" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
-    <!-- Everything is allinged from top margin   -->
+    <!-- Everything is aligned from top margin -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const header = document.getElementById("header");
-            const headerHeight = header.offsetHeight;
+            const headerHeight = header ? header.offsetHeight : 0;
 
             // Set padding for body (to prevent overlap)
             document.body.style.paddingTop = headerHeight + "px";
 
             // Align sidebar
             const sidebar = document.getElementById("sidebar");
-            sidebar.style.marginTop = headerHeight + 20 + "px"; // extra spacing
-            
+            if (sidebar) sidebar.style.marginTop = (headerHeight + 20) + "px"; // extra spacing
+
             // Align slideshow
             const slideshow = document.querySelector(".slideshow-container");
-            slideshow.style.marginTop = (headerHeight + 10) + "px";
+            if (slideshow) slideshow.style.marginTop = (headerHeight + 10) + "px";
         });
     </script>
+
     <style>
-
-        /* Freeze header  CSS */
+        /* Freeze header CSS */
         header#header {
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100%;
-              z-index: 100;
-            }
-
-            #sidebar {
             position: fixed;
-            left: 0;       
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        #sidebar {
+            position: fixed;
+            left: 0;
             width: 390px;
             height: 100%;
-            background: #312450;   /* MATCH PAGE BACKGROUND */    
+            background: #312450;   /* MATCH PAGE BACKGROUND */
             box-shadow: none !important;
             z-index: 1000;
-            }
+            transition: transform 0.28s ease;
+        }
 
         /* Slideshow CSS */
         .slideshow-container {
@@ -52,7 +53,7 @@
             max-width: 700px;
             height: auto;
             aspect-ratio: 16 / 9;   /* keeps proportion on all screens */
-             margin: 5px auto 0 !important;
+            margin: 5px auto 0 !important;
             overflow: hidden;
             position: relative;
         }
@@ -72,45 +73,45 @@
         }
 
         /* Mobile fix */
-            @media (max-width: 480px) {
-                .slideshow-container {
-                    aspect-ratio: 4 / 3; /* better for portrait screens */
-                }
+        @media (max-width: 480px) {
+            .slideshow-container {
+                aspect-ratio: 4 / 3; /* better for portrait screens */
             }
-            .prev, .next {
-        cursor: pointer;
-        position: absolute;
-        top: 50%;
-        padding: 12px;
-        margin-top: -22px;
-        color: white;
-        font-weight: bold;
-        font-size: 24px;
-        border-radius: 50%;
-        background: rgba(0,0,0,0.5);
-        user-select: none;
-    }
-    .prev { left: 10px; }
-    .next { right: 10px; }
+        }
 
-    .dots-container {
-        text-align: center;
-        position: absolute;
-        bottom: 15px;
-        width: 100%;
-    }
-    .dot {
-        cursor: pointer;
-        height: 14px;
-        width: 14px;
-        margin: 0 4px;
-        background-color: rgba(255,255,255,0.6);
-        border-radius: 50%;
-        display: inline-block;
-        transition: background-color 0.3s;
-    }
-    .dot.active { background-color: #6b2fb6; }
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            padding: 12px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.5);
+            user-select: none;
+        }
+        .prev { left: 10px; }
+        .next { right: 10px; }
 
+        .dots-container {
+            text-align: center;
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+        }
+        .dot {
+            cursor: pointer;
+            height: 14px;
+            width: 14px;
+            margin: 0 4px;
+            background-color: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        .dot.active { background-color: #6b2fb6; }
 
         /* -------------------------------------------- */
         /* Company Information – 3 Columns x 2 Rows Grid */
@@ -238,7 +239,7 @@
             .company-info-grid .info-icon { bottom: -18px; width: 48px; height: 48px; }
         }
 
-        /*code for araaning the title image and text side by side*/
+        /* Arrange the title image and text side by side */
         .company-intro {
             display: flex;
             align-items: center;      /* Vertically center text with image */
@@ -271,44 +272,75 @@
             height: auto;   /* maintain aspect ratio */
             border-radius: 8px; /* optional */
             object-fit: cover;   /* optional, crops image if needed */
-            }
+        }
 
-            #intro {
-                background: #312450 /* same as sidebar */
-                         /* ensures text is readable on dark background */
+        #intro { background: #312450; }
+        #one { background: #312450; }
+        #two { background: #312450; }
+        #three { background: #312450; }
+        #footer { background-color: #312450; }
+
+        #wrapper { margin-left: 220px;  /* push content to the right of sidebar */ }
+
+        .section-align {
+            padding-left: 20px;
+            padding-right: 20px;
+            max-width: 2000px;        /* matches intro and product section width */
+            margin: 0 auto;           /* centers the section */
+            padding-top: 40px;        /* aligns top spacing with intro */
+        }
+
+        /* -------------------------
+           Responsive sidebar behavior
+           Hide/collapse the sidebar on tablet-sized viewports and below,
+           expose a menu toggle to open it.
+           ------------------------- */
+        header .menu-toggle {
+            display: none; /* shown in media queries below */
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            padding: 8px 12px;
+        }
+
+        /* When sidebar is hidden on smaller screens we use transform translateX */
+        @media (max-width: 1024px) {
+            /* Collapse the sidebar off-canvas by default */
+            #sidebar {
+                transform: translateX(-110%);
+                width: 320px; /* slightly smaller on tablets */
+                box-shadow: 0 6px 24px rgba(0,0,0,0.35);
             }
-            #one {
-                background: #312450 /* same as sidebar */
-                         /* ensures text is readable on dark background */
+            /* When open (added by JS), show it */
+            #sidebar.open {
+                transform: translateX(0);
             }
-            #two {
-                background: #312450 /* same as sidebar */
-                         /* ensures text is readable on dark background */
-            }
-            #three {
-                background: #312450 /* same as sidebar */
-                         /* ensures text is readable on dark background */
-            }
-            #footer {
-                background-color: #312450;
-            }
+            /* Make wrapper use the full width */
             #wrapper {
-                margin-left: 220px;  /* push content to the right of sidebar */
+                margin-left: 0 !important;
             }
-            .section-align {
-                padding-left: 20px;
-                padding-right: 20px;
-                max-width: 2000px;        /* matches intro and product section width */
-                margin: 0 auto;           /* centers the section */
-                padding-top: 40px;        /* aligns top spacing with intro */
-            }
-            
+            /* show the menu toggle in header */
+            header .menu-toggle { display: inline-block; }
+            /* make header content align so toggle sits left of title (optional tweak) */
+            header#header { display:flex; align-items:center; gap:8px; padding:10px 16px; }
+            header#header .title { margin-left: 6px; }
+        }
+
+        /* Larger desktop - ensure sidebar visible by default */
+        @media (min-width: 1025px) {
+            #sidebar { transform: translateX(0); }
+            header .menu-toggle { display: none; }
+        }
     </style>
 </head>
 
 <body class="is-preload">
     <!-- Header -->
     <header id="header">
+        <!-- Menu toggle for tablet/mobile -->
+        <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open menu">☰</button>
         <a href="index.html" class="title">REVALON Biocare</a>
         <nav>
             <ul>
@@ -319,29 +351,29 @@
     </header>
 
     <!-- Slideshow at the top -->
-        <div class="slideshow-container">
-            <div class="slide fade"><img src="images/sleep1.png" alt=""></div>
-            <div class="slide fade"><img src="images/sleep2.png" alt=""></div>
-            <div class="slide fade"><img src="images/sleep3.png" alt=""></div>
-            <div class="slide fade"><img src="images/sleep4.png" alt=""></div>
-            <div class="slide fade"><img src="images/sleep5.png" alt=""></div>
+    <div class="slideshow-container">
+        <div class="slide fade"><img src="images/sleep1.png" alt=""></div>
+        <div class="slide fade"><img src="images/sleep2.png" alt=""></div>
+        <div class="slide fade"><img src="images/sleep3.png" alt=""></div>
+        <div class="slide fade"><img src="images/sleep4.png" alt=""></div>
+        <div class="slide fade"><img src="images/sleep5.png" alt=""></div>
 
-            <!-- Navigation buttons -->
-            <a class="prev">&#10094;</a>
-            <a class="next">&#10095;</a>
+        <!-- Navigation buttons -->
+        <a class="prev">&#10094;</a>
+        <a class="next">&#10095;</a>
 
-            <!-- Dots -->
-            <div class="dots-container">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-            </div>
+        <!-- Dots -->
+        <div class="dots-container">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
         </div>
+    </div>
 
     <!-- Slideshow Script -->
-        <script>
+    <script>
         let slideIndex = 0;
         let slides = document.getElementsByClassName("slide");
         let dots = document.getElementsByClassName("dot");
@@ -354,27 +386,28 @@
 
             for (let i = 0; i < slides.length; i++) {
                 slides[i].style.display = "none";
-                dots[i].classList.remove("active");
+                if (dots[i]) dots[i].classList.remove("active");
             }
 
-            slides[slideIndex].style.display = "block";
-            dots[slideIndex].classList.add("active");
+            if (slides[slideIndex]) {
+                slides[slideIndex].style.display = "block";
+                if (dots[slideIndex]) dots[slideIndex].classList.add("active");
+            }
 
             slideIndex++;
             slideTimer = setTimeout(showSlides, 8000);
         }
         showSlides();
 
-        document.querySelector(".prev").addEventListener("click", () => { slideIndex -= 2; showSlides(); });
-        document.querySelector(".next").addEventListener("click", () => { showSlides(); });
+        const prevBtn = document.querySelector(".prev");
+        const nextBtn = document.querySelector(".next");
+        if (prevBtn) prevBtn.addEventListener("click", () => { slideIndex -= 2; showSlides(); });
+        if (nextBtn) nextBtn.addEventListener("click", () => { showSlides(); });
         for (let i = 0; i < dots.length; i++) {
             dots[i].addEventListener("click", () => { showSlides(i); });
         }
-</script>
+    </script>
 
-
-
-</style>
     <section id="sidebar">
         <div class="inner">
             <nav>
@@ -393,22 +426,21 @@
 
         <!-- Intro Section -->
         <section id="intro" class="wrapper style1 fullscreen fade-up">
-        <div class="inner company-intro">
-            <div class="intro-image">
-                <img src="images/revalonbiocare.png" alt="REVALON Biocare" />
+            <div class="inner company-intro">
+                <div class="intro-image">
+                    <img src="images/revalonbiocare.png" alt="REVALON Biocare" />
+                </div>
+                <div class="intro-text">
+                    <h1>Welcome To REVALON Biocare</h1>
+                    <p>
+                        We are a young company working in <strong>Pharmaceutical Medicines</strong> where innovation meets integrity in healthcare.
+                        Guided by our tagline <strong>Revival to Resilience</strong>,
+                        we deliver high-quality, evidence-based pharmaceutical solutions.
+                    </p>
+                </div>
             </div>
-            <div class="intro-text">
-                <h1>Welcome To REVALON Biocare</h1>
-                <p>
-                    We are a young company working in <strong>Pharmaceutical Medicines</strong> where innovation meets integrity in healthcare. 
-                    Guided by our tagline <strong>Revival to Resilience</strong>, 
-                    we deliver high-quality, evidence-based pharmaceutical solutions.
-                </p>
-            </div>
-        </div>
             <div class="inner">
                 <h2>Company Information</h2>
-                <!-- 3 columns x 2 rows grid (6 cells). Each info cell uses .info-card; last cell is empty -->
                 <div class="company-info-grid" role="table" aria-label="Company information table">
                     <div class="info-card" role="row">
                         <h3>GST Number</h3>
@@ -440,7 +472,6 @@
                         <div class="info-icon" aria-hidden="true"><span class="fa fa-box"></span></div>
                     </div>
 
-                    <!-- Sixth cell left empty to form a 3x2 grid like your design -->
                     <div class="empty-cell" role="presentation" aria-hidden="true"></div>
                 </div>
             </div>
@@ -453,46 +484,47 @@
                 <div class="content"><div class="inner">
                     <h2>Dr Sachin Bidwai</h2>
                     <span><b>Consultant Physician | Internal Medicine Specialist</b> <br>
-                       B.A.M.S | D.G.M | F.C.C.S| Advanced Certificate in Diabetes Mellitus<br><br>      
-                        Dr. Sachin Bidwai is a highly accomplished Physician and the visionary founder of Revalon Biocare, 
-                        bringing over a decade of clinical excellence, diagnostic expertise, and patient-centric healthcare 
-                        leadership. Known for his sharp clinical judgment and compassionate treatment approach, he has earned 
-                        the trust of thousands of patients across India.Dr. Bidwai has a distinguished reputation for handling complex, 
-                        multisystem medical conditions with precision—including diabetes reversal, hypertension management, infectious 
-                        diseases, autoimmune disorders, metabolic health, and evidence-based long-term care.His ability to diagnose challenging cases early and accurately has made him one of the most reliable physicians in the region. Over the years, he has successfully treated conditions like lifestyle disorders, and chronic metabolic diseases with exceptional outcomes.
+                       B.A.M.S | D.G.M | F.C.C.S| Advanced Certificate in Diabetes Mellitus<br><br>
+                        Dr. Sachin Bidwai is a highly accomplished Physician and the visionary founder of Revalon Biocare,
+                        bringing over a decade of clinical excellence, diagnostic expertise, and patient-centric healthcare
+                        leadership. Known for his sharp clinical judgment and compassionate treatment approach, he has earned
+                        the trust of thousands of patients across India. Dr. Bidwai has a distinguished reputation for handling complex,
+                        multisystem medical conditions with precision—including diabetes reversal, hypertension management, infectious
+                        diseases, autoimmune disorders, metabolic health, and evidence-based long-term care. His ability to diagnose challenging cases early and accurately has made him one of the most reliable physicians in the region. Over the years, he has successfully treated conditions like lifestyle disorders, and chronic metabolic diseases with exceptional outcomes.
                     </span>
-                </div>
-            </div>
+                </div></div>
             </section>
             <section>
                 <a href="#" class="image"><img src="images/pathak.png" alt="" /></a>
                 <div class="content"><div class="inner">
-                <h2>Mr. Durganand Pathak</h2>
-                <span><b>Clinical Research | Pharmacovigilance Specialist</b><br>
-                    B.Sc | D.Pharm | B.Pharm | M.Pharm<br><br>
-                    Mr. Durganand Pathak is a highly skilled pharmaceutical professional with over 10 years of specialised 
-                    experience in Clinical Research, Pharmacovigilance, and Drug Safety Management. With a strong academic 
-                    foundation in pharmaceutical sciences and a decade of industry exposure, he has developed deep expertise 
-                    in monitoring drug safety, analysing adverse events, and ensuring compliance with global regulatory standards.
-                    He has worked with leading corporate pharmaceutical and clinical research organisations, where he contributed 
-                    to critical safety reporting functions, protocol reviews, risk management strategies, and global clinical 
-                    safety operations.<br>
-                </span></div></div>
+                    <h2>Mr. Durganand Pathak</h2>
+                    <span><b>Clinical Research | Pharmacovigilance Specialist</b><br>
+                        B.Sc | D.Pharm | B.Pharm | M.Pharm<br><br>
+                        Mr. Durganand Pathak is a highly skilled pharmaceutical professional with over 10 years of specialised
+                        experience in Clinical Research, Pharmacovigilance, and Drug Safety Management. With a strong academic
+                        foundation in pharmaceutical sciences and a decade of industry exposure, he has developed deep expertise
+                        in monitoring drug safety, analysing adverse events, and ensuring compliance with global regulatory standards.
+                        He has worked with leading corporate pharmaceutical and clinical research organisations, where he contributed
+                        to critical safety reporting functions, protocol reviews, risk management strategies, and global clinical
+                        safety operations.<br>
+                    </span>
+                </div></div>
             </section>
             <section>
                 <a href="#" class="image"><img src="images/Sushama.png" alt="" class ="profile-img"/></a>
                 <div class="content"><div class="inner">
-                <h2>Mrs Sushama Delmade</h2>
-                <span><b>Fnancial Strategy | Growth Partner</b><br>
-                    Bachlors in Computer Science(B.Sc)<br><br>
-                    Mrs. Sushama Delmade is a dedicated financial planning professional with a strong 
-                    foundation in analytical thinking, backed by a Bachelor’s degree in Computer Science 
-                    (B.Sc). With over a decade of experience in investing and fundraising, she combines 
-                    technical precision with deep market insight to deliver strategic financial solutions.
-                    Her expertise spans portfolio development, investment strategy, and capital raising, 
-                    particularly for small-scale industries seeking sustainable growth. Driven by a genuine 
-                    passion for finance, she has spent more than 10 years working closely with clients to 
-                    build resilient portfolios and secure essential funding.</span></div></div>
+                    <h2>Mrs Sushama Delmade</h2>
+                    <span><b>Fnancial Strategy | Growth Partner</b><br>
+                        Bachlors in Computer Science(B.Sc)<br><br>
+                        Mrs. Sushama Delmade is a dedicated financial planning professional with a strong
+                        foundation in analytical thinking, backed by a Bachelor’s degree in Computer Science
+                        (B.Sc). With over a decade of experience in investing and fundraising, she combines
+                        technical precision with deep market insight to deliver strategic financial solutions.
+                        Her expertise spans portfolio development, investment strategy, and capital raising,
+                        particularly for small-scale industries seeking sustainable growth. Driven by a genuine
+                        passion for finance, she has spent more than 10 years working closely with clients to
+                        build resilient portfolios and secure essential funding.</span>
+                </div></div>
             </section>
         </section>
 
@@ -503,7 +535,6 @@
                 <p class="lead">We restore health and empower lives with trusted, effective, and accessible therapies.</p>
 
                 <div class="features" role="list" aria-label="Products and therapies (3 columns by 2 rows)">
-                    <!-- 1 -->
                     <article class="feature" role="listitem">
                         <a href="#" class="image"><img src="images/esogreddsr.png" alt="Esogred DSR" /></a>
                         <h3 style="text-align: center;">Esogred DSR</h3>
@@ -511,7 +542,6 @@
                         <p>A systematic review and meta-analysis of randomized controlled trials indicated that combining domperidone with proton pump inhibitors (PPIs) like esomeprazole improved GERD symptoms more effectively than PPIs alone.</p>
                     </article>
 
-                    <!-- 2 -->
                     <article class="feature" role="listitem">
                         <a href="#" class="image"><img src="images/fluqik.png" alt="Fluqik" /></a>
                         <h3 style="text-align: center;">Fluqik</h3>
@@ -519,7 +549,6 @@
                         <p>Influenza Treatment: A meta-analysis involving over 100,000 patients demonstrated that oseltamivir significantly reduced the duration of fever and influenza-like symptoms. It also decreased hospitalization rates and the need for antibiotics.</p>
                     </article>
 
-                    <!-- 3 -->
                     <article class="feature" role="listitem">
                         <a href="#" class="image"><img src="images/vitrid3.png" alt="VitriD3" /></a>
                         <h3 style="text-align: center;">VitriD3</h3>
@@ -527,7 +556,6 @@
                         <p>Supplementation with Vitamin D has been shown to benefit individuals with hypertension, particularly those with a deficiency.</p>
                     </article>
 
-                    <!-- 4 -->
                     <article class="feature" role="listitem">
                         <a href="#" class="image"><img src="images/argivon.png" alt="Argivon" /></a>
                         <h3 style="text-align: center;">Argivon</h3>
@@ -535,7 +563,6 @@
                         <p>Erectile Dysfunction: A multicenter, double-blind, randomized, placebo-controlled trial demonstrated that high-dose L-Arginine supplementation improved erectile function in men with vasculogenic erectile dysfunction. Blood Pressure: L-Arginine supplementation has been associated with reductions in blood pressure, particularly in individuals with hypertension.</p>
                     </article>
 
-                    <!-- 5 -->
                     <article class="feature" role="listitem">
                         <a href="#" class="image"><img src="images/luprest.png" alt="Luprest" /></a>
                         <h3 style="text-align: center;">Luprest</h3>
@@ -543,7 +570,6 @@
                         <p>Endometriosis: Studies have shown that dydrogesterone significantly reduces dysmenorrhea and pelvic pain in women with endometriosis. Threatened Miscarriage: A systematic review indicated that dydrogesterone reduces the odds of miscarriage in women experiencing threatened abortion.</p>
                     </article>
 
-                    <!-- 6 (placeholder) -->
                     <article class="feature" role="listitem">
                         <a href="#" class="image"><img src="images/comingsoon.png" alt="Coming soon" /></a>
                         <h3 style="text-align: center;">More coming soon</h3>
@@ -556,146 +582,72 @@
             </div>
         </section>
 
-        <!-- Contact Form Code to collect inquiries -->
+        <!-- Contact Form -->
         <section id="three" class="wrapper style1 fade-up">
             <div class="inner">
                 <h2>Get in touch</h2>
                 <div class="split style1">
-                   <!-- <section>
-                        <form id="contactForm">
+                    <section>
+                        <form id="contactForm" action="https://formspree.io/f/mjkjqojr" method="POST">
                             <div class="fields">
-                                <div class="field half"><label for="name">Name</label><input type="text" name="name" id="name" required /></div>
-                                <div class="field half"><label for="email">Email</label><input type="email" name="email" id="email" required /></div>
-                                <div class="field"><label for="message">Message</label><textarea name="message" id="message" rows="5" required></textarea></div>
+                                <div class="field half">
+                                    <label for="name">Name*</label>
+                                    <input type="text" name="name" id="name" autocomplete="off" required />
+                                </div>
+                                <div class="field half">
+                                    <label for="email">Email*</label>
+                                    <input type="email" name="email" id="email" autocomplete="off" required />
+                                </div>
+                                <div class="field half">
+                                    <label for="mobilenumber">Mobile Number*</label>
+                                    <input type="text" name="mobilenumber" id="mobilenumber" autocomplete="off" required />
+                                </div>
+                                <div class="field">
+                                    <label for="message">Message* (max 5000 characters)</label>
+                                    <textarea name="message" id="message" rows="5" required maxlength="5000"></textarea>
+                                    <div id="charCount" style="font-size:0.9em; color:#555;">0 / 5000</div>
+                                </div>
                             </div>
+
                             <ul class="actions">
-                                <button type="submit" id="submitBtn" class="button submit">Send Message</button>
+                                <li>
+                                    <button type="submit" id="submitBtn" class="button submit" disabled>Send Message</button>
+                                </li>
                             </ul>
+
+                            <div id="formStatus" style="margin-top:10px;"></div>
                         </form>
-                    </section>-->
-                  
-                   <section>
-              <form id="contactForm" action="https://formspree.io/f/mjkjqojr" method="POST">
-                <div class="fields">
-                  <div class="field half">
-                    <label for="name">Name*</label>
-                    <input type="text" name="name" id="name" autocomplete="off" required />
-                  </div>
-                  <div class="field half">
-                    <label for="email">Email*</label>
-                    <input type="email" name="email" id="email" autocomplete="off" required />
-                  </div>
-                  <div class="field half">
-                    <label for="mobilenumber">Mobile Number*</label>
-                    <input type="text" name="mobilenumber" id="mobilenumber" autocomplete="off" required />
-                  </div>
-                  <div class="field">
-                    <label for="message">Message* (max 5000 characters)</label>
-                    <textarea name="message" id="message" rows="5" required maxlength="5000"></textarea>
-                    <div id="charCount" style="font-size:0.9em; color:#555;">0 / 5000</div>
-                  </div>
-                </div>
-            
-                <ul class="actions">
-                  <li>
-                    <button type="submit" id="submitBtn" class="button submit" disabled>Send Message</button>
-                  </li>
-                </ul>
-            
-                <div id="formStatus" style="margin-top:10px;"></div>
-              </form>
-            </section>
-            
-            <script>
-              const form = document.getElementById('contactForm');
-              const submitBtn = document.getElementById('submitBtn');
-              const fields = Array.from(form.querySelectorAll('input[required], textarea[required]'));
-              const messageField = document.getElementById('message');
-              const charCount = document.getElementById('charCount');
-            
-              // Enable submit button only if all fields are filled
-              function checkFields() {
-                const allFilled = fields.every(field => field.value.trim() !== '');
-                submitBtn.disabled = !allFilled;
-              }
-            
-              // Update character counter for message
-              function updateCharCount() {
-                charCount.textContent = `${messageField.value.length} / 5000`;
-              }
-            
-              // Add event listeners
-              fields.forEach(field => field.addEventListener('input', checkFields));
-              messageField.addEventListener('input', updateCharCount);
-            
-              // Initial checks
-              checkFields();
-              updateCharCount();
-            
-              // Form submission
-              form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const statusDiv = document.getElementById('formStatus');
-                const formData = new FormData(form);
-            
-                fetch(form.action, {
-                  method: form.method,
-                  body: formData,
-                  headers: { 'Accept': 'application/json' }
-                })
-                .then(function(response) {
-                  if (response.ok) {
-                    statusDiv.textContent = "Thank you! Your message was sent.";
-                    statusDiv.style.color = "green";
-                    form.reset();
-                    checkFields();       // disable submit again after reset
-                    updateCharCount();   // reset char counter
-                  } else {
-                    response.json().then(function(data) {
-                      statusDiv.textContent = data.error || "Sorry, there was a problem.";
-                      statusDiv.style.color = "red";
-                    });
-                  }
-                })
-                .catch(function() {
-                  statusDiv.textContent = "Network error. Please try again.";
-                  statusDiv.style.color = "red";
-                });
-              });
-            </script>
+                    </section>
+
                     <section>
                         <ul class="contact">
                             <li><h3>Address</h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" class="contact-icon">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
-                            </svg>                              
-                            <a href="https://maps.app.goo.gl/a384yBEeYkVtneYt9" target="_blank" style="text-decoration:none; color:inherit;">
-                                102, Pristine Square,<br>
-                                Wakad, Pune 411057, Maharashtra<br>
-                                India
-                            </a>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" class="contact-icon">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+                                </svg>
+                                <a href="https://maps.app.goo.gl/a384yBEeYkVtneYt9" target="_blank" style="text-decoration:none; color:inherit;">
+                                    102, Pristine Square,<br>
+                                    Wakad, Pune 411057, Maharashtra<br>
+                                    India
+                                </a>
                             </li>
 
                             <li><h3>Email</h3>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" class="contact-icon">
                                     <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.4l-8 4.8-8-4.8V6l8 4.8L20 6v2.4z"/>
-                                </svg>                         
-                                <a href="mailto:revalonbiocare@gmail.com">
-                                    revalonbiocare@gmail.com
-                                </a>
-                            </li> 
+                                </svg>
+                                <a href="mailto:revalonbiocare@gmail.com">revalonbiocare@gmail.com</a>
+                            </li>
+
                             <li><h3>Phone</h3>
                                 <li class="contact-number" style="display:flex; flex-direction:column; gap:10px;">
-                                    <!-- Number 1 -->
                                     <div style="display:flex; align-items:center; gap:8px;">
-                                        <!-- WhatsApp SVG -->
                                         <a href="https://wa.me/919673317600" target="_blank" style="display:flex; align-items:center; gap:4px; color:#25D366; text-decoration:none;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#25D366" viewBox="0 0 24 24">
                                                 <path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.62-5.96C.122 5.317 5.5 0 12.061 0c3.186 0 6.167 1.24 8.413 3.488A11.8 11.8 0 0124 11.887C23.998 18.45 18.624 23.83 12.06 23.83a11.9 11.9 0 01-5.946-1.594L.057 24zm6.597-3.807c1.735 1.033 3.27 1.668 5.392 1.668 5.448 0 9.886-4.434 9.889-9.877.002-5.462-4.415-9.89-9.881-9.893-5.452 0-9.887 4.434-9.889 9.873a9.82 9.82 0 001.654 5.403l-.999 3.648 3.834-1.822zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.03-.967-.272-.099-.47-.148-.669.148-.198.297-.768.967-.94 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.521.149-.173.198-.297.297-.495.099-.198.05-.372-.025-.521-.074-.149-.669-1.612-.916-2.206-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.718 2.006-1.413.248-.695.248-1.29.173-1.413z"/>
-                                            </svg>                                            
+                                            </svg>
                                         </a>
 
-                                        <!-- Call SVG -->
                                         <a href="tel:+919673317600" style="display:flex; align-items:center; gap:4px; color:#0aa2c0; text-decoration:none;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#0aa2c0" viewBox="0 0 24 24">
                                                 <path d="M22.605 16.493l-5.387-2.31a1.003 1.003 0 0 0-1.092.26l-2.34 2.34a15.467 15.467 0 0 1-7.07-7.072l2.34-2.34a1.003 1.003 0 0 0 .26-1.093L7.506 1.394A1.003 1.003 0 0 0 6.493.505L1.66.027A1 1 0 0 0 .662 1.03C.006 9.495 7.505 17 16.004 23.338a1 1 0 0 0 1.003-.998l-.478-4.833a1.003 1.003 0 0 0-.927-.972z"/>
@@ -704,16 +656,13 @@
                                         </a>
                                     </div>
 
-                                    <!-- Number 2 -->
                                     <div style="display:flex; align-items:center; gap:8px;">
-                                        <!-- WhatsApp SVG -->
                                         <a href="https://wa.me/919730736936" target="_blank" style="display:flex; align-items:center; gap:4px; color:#25D366; text-decoration:none;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#25D366" viewBox="0 0 24 24">
                                                 <path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.62-5.96C.122 5.317 5.5 0 12.061 0c3.186 0 6.167 1.24 8.413 3.488A11.8 11.8 0 0124 11.887C23.998 18.45 18.624 23.83 12.06 23.83a11.9 11.9 0 01-5.946-1.594L.057 24zm6.597-3.807c1.735 1.033 3.27 1.668 5.392 1.668 5.448 0 9.886-4.434 9.889-9.877.002-5.462-4.415-9.89-9.881-9.893-5.452 0-9.887 4.434-9.889 9.873a9.82 9.82 0 001.654 5.403l-.999 3.648 3.834-1.822zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.03-.967-.272-.099-.47-.148-.669.148-.198.297-.768.967-.94 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.521.149-.173.198-.297.297-.495.099-.198.05-.372-.025-.521-.074-.149-.669-1.612-.916-2.206-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.718 2.006-1.413.248-.695.248-1.29.173-1.413z"/>
-                                            </svg>                                            
+                                            </svg>
                                         </a>
 
-                                        <!-- Call SVG -->
                                         <a href="tel:+919730736936" style="display:flex; align-items:center; gap:4px; color:#0aa2c0; text-decoration:none;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#0aa2c0" viewBox="0 0 24 24">
                                                 <path d="M22.605 16.493l-5.387-2.31a1.003 1.003 0 0 0-1.092.26l-2.34 2.34a15.467 15.467 0 0 1-7.07-7.072l2.34-2.34a1.003 1.003 0 0 0 .26-1.093L7.506 1.394A1.003 1.003 0 0 0 6.493.505L1.66.027A1 1 0 0 0 .662 1.03C.006 9.495 7.505 17 16.004 23.338a1 1 0 0 0 1.003-.998l-.478-4.833a1.003 1.003 0 0 0-.927-.972z"/>
@@ -722,18 +671,6 @@
                                         </a>
                                     </div>
                                 </li>
-
-
-
-                           <!-- <li><h3>Social</h3>
-                                <ul class="icons">
-                                    <li><a href="#" class="icon brands fa-twitter"></a></li>
-                                    <li><a href="#" class="icon brands fa-facebook-f"></a></li>
-                                    <li><a href="#" class="icon brands fa-github"></a></li>
-                                    <li><a href="#" class="icon brands fa-instagram"></a></li>
-                                    <li><a href="#" class="icon brands fa-linkedin-in"></a></li>
-                                </ul>-->
-                            </li>
                         </ul>
                     </section>
                 </div>
@@ -753,92 +690,171 @@
     <script src="assets/js/browser.min.js"></script>
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>  
+    <script src="assets/js/main.js"></script>
 
-
-    <!-- Backend email submission 
+    <!-- Sidebar toggle behavior for tablet/mobile -->
     <script>
-    document.getElementById('contactForm').addEventListener('submit', async function(e){
-        e.preventDefault();
-        const submitBtn = document.getElementById('submitBtn');
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending...';
+      (function () {
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarLinks = sidebar ? sidebar.querySelectorAll('a') : [];
+        const mq = window.matchMedia('(max-width: 1024px)');
 
-        const payload = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            message: document.getElementById('message').value
-        };
-
-        try {
-            const res = await fetch('/api/send-email', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const data = await res.json().catch(() => ({}));
-            if (res.ok) {
-                alert('Message sent successfully!');
-                document.getElementById('contactForm').reset();
-            } else {
-                alert('Failed to send message: ' + (data.error || res.statusText));
-            }
-        } catch (err) {
-            alert('Failed to send message. Check console for details.');
-            console.error(err);
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Send Message';
+        function setAria(open) {
+          if (menuToggle) menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
         }
-    });
-    </script>-->
 
+        function closeSidebar() {
+          if (!sidebar) return;
+          sidebar.classList.remove('open');
+          setAria(false);
+        }
+
+        function openSidebar() {
+          if (!sidebar) return;
+          sidebar.classList.add('open');
+          setAria(true);
+        }
+
+        // Toggle on button
+        if (menuToggle) {
+          menuToggle.addEventListener('click', function (e) {
+            if (!sidebar) return;
+            sidebar.classList.toggle('open');
+            setAria(sidebar.classList.contains('open'));
+          });
+        }
+
+        // Close sidebar when clicking a link inside (good UX on smaller screens)
+        sidebarLinks.forEach(function (link) {
+          link.addEventListener('click', function () {
+            if (mq.matches) closeSidebar();
+          });
+        });
+
+        // Close when clicking outside (for mobile/tablets)
+        document.addEventListener('click', function (e) {
+          if (!mq.matches) return; // only on narrow viewports
+          if (!sidebar || !sidebar.classList.contains('open')) return;
+          const isInside = sidebar.contains(e.target) || (menuToggle && menuToggle.contains(e.target));
+          if (!isInside) closeSidebar();
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') closeSidebar();
+        });
+
+        // On resize, ensure sidebar is visible for desktop and hidden for tablet
+        function handleResize() {
+          if (mq.matches) {
+            // ensure closed by default on tablet/phone
+            closeSidebar();
+          } else {
+            // ensure open/visible on desktop by removing off-canvas transform
+            if (sidebar) sidebar.classList.remove('open');
+            if (sidebar) sidebar.style.transform = 'translateX(0)';
+            if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+          }
+        }
+        // initial
+        handleResize();
+        window.addEventListener('resize', handleResize);
+      })();
+    </script>
+
+    <!-- Contact form small UX script -->
+    <script>
+      (function() {
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const fields = Array.from(form.querySelectorAll('input[required], textarea[required]'));
+        const messageField = document.getElementById('message');
+        const charCount = document.getElementById('charCount');
+
+        function checkFields() {
+          const allFilled = fields.every(field => field.value.trim() !== '');
+          submitBtn.disabled = !allFilled;
+        }
+
+        function updateCharCount() {
+          charCount.textContent = `${messageField.value.length} / 5000`;
+        }
+
+        fields.forEach(field => field.addEventListener('input', checkFields));
+        messageField.addEventListener('input', updateCharCount);
+
+        checkFields();
+        updateCharCount();
+
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const statusDiv = document.getElementById('formStatus');
+          const formData = new FormData(form);
+
+          fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+          })
+          .then(function(response) {
+            if (response.ok) {
+              statusDiv.textContent = "Thank you! Your message was sent.";
+              statusDiv.style.color = "green";
+              form.reset();
+              checkFields();
+              updateCharCount();
+            } else {
+              response.json().then(function(data) {
+                statusDiv.textContent = data.error || "Sorry, there was a problem.";
+                statusDiv.style.color = "red";
+              }).catch(function() {
+                statusDiv.textContent = "Sorry, there was a problem.";
+                statusDiv.style.color = "red";
+              });
+            }
+          })
+          .catch(function() {
+            statusDiv.textContent = "Network error. Please try again.";
+            statusDiv.style.color = "red";
+          });
+        });
+      })();
+    </script>
+
+    <!-- Reamaze loader -->
+    <script type="text/javascript" async src="https://cdn.reamaze.com/assets/reamaze-loader.js"></script>
+    <script type="text/javascript">
+      var _support = _support || { 'ui': {}, 'user': {} };
+      _support['account'] = '39375041-dd11-402d-b89b-68d1c0e9264e';
+      _support['ui']['contactMode'] = 'mixed';
+      _support['ui']['enableKb'] = 'true';
+      _support['ui']['mailbox'] = '68159849';
+      _support['ui']['styles'] = {
+        widgetColor: 'rgba(16, 162, 197, 1)',
+        gradient: true,
+      };
+      _support['ui']['shoutboxFacesMode'] = '';
+      _support['ui']['widget'] = {
+        allowBotProcessing: 'true',
+        slug: 'revalon-biocare-816448374de1d144',
+        label: {
+          text: 'Let us know if you have any questions! 😊',
+          mode: "notification",
+          delay: 3,
+          duration: 30,
+          primary: '',
+          secondary: '',
+          sound: true,
+        },
+        position: 'bottom-right'
+      };
+      _support['ui']['overrides'] = _support['ui']['overrides'] || {};
+      _support['ui']['overrides']['confirmationMessage'] = '';
+      _support['apps'] = {
+        recentConversations: {},
+        faq: {"enabled":true}
+      };
+    </script>
 </body>
-
-<script type="text/javascript" async src="https://cdn.reamaze.com/assets/reamaze-loader.js"></script>
-<script type="text/javascript">
-  var _support = _support || { 'ui': {}, 'user': {} };
-  _support['account'] = '39375041-dd11-402d-b89b-68d1c0e9264e';
-  _support['ui']['contactMode'] = 'mixed';
-  _support['ui']['enableKb'] = 'true';
-  _support['ui']['mailbox'] = '68159849';
-  _support['ui']['styles'] = {
-    widgetColor: 'rgba(16, 162, 197, 1)',
-    gradient: true,
-  };
-  _support['ui']['shoutboxFacesMode'] = '';
-  _support['ui']['widget'] = {
-    allowBotProcessing: 'true',
-    slug: 'revalon-biocare-816448374de1d144',
-    label: {
-      text: 'Let us know if you have any questions! 😊',
-      mode: "notification",
-      delay: 3,
-      duration: 30,
-      primary: '',
-      secondary: '',
-      sound: true,
-    },
-    position: 'bottom-right'
-  };
-  _support['ui']['overrides'] = _support['ui']['overrides'] || {};
-  _support['ui']['overrides']['confirmationMessage'] = '';
-  _support['apps'] = {
-    recentConversations: {},
-    faq: {"enabled":true}
-  };
-</script>
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
