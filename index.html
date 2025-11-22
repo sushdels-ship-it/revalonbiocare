@@ -36,15 +36,15 @@
             z-index: 100;
         }
 
+        /* Sidebar: visible by default on desktop/tablet */
         #sidebar {
             position: fixed;
             left: 0;
-            width: 390px;
+            width: 320px;            /* sidebar width used for layout */
             height: 100%;
-            background: #312450;   /* MATCH PAGE BACKGROUND */
+            background: #312450;     /* MATCH PAGE BACKGROUND */
             box-shadow: none !important;
             z-index: 1000;
-            transition: transform 0.28s ease;
         }
 
         /* Slideshow CSS */
@@ -280,7 +280,10 @@
         #three { background: #312450; }
         #footer { background-color: #312450; }
 
-        #wrapper { margin-left: 220px;  /* push content to the right of sidebar */ }
+        /* Keep wrapper pushed to the right of sidebar on larger screens */
+        #wrapper {
+            margin-left: 320px;  /* match sidebar width */
+        }
 
         .section-align {
             padding-left: 20px;
@@ -290,48 +293,19 @@
             padding-top: 40px;        /* aligns top spacing with intro */
         }
 
-        /* -------------------------
-           Responsive sidebar behavior
-           Hide/collapse the sidebar on tablet-sized viewports and below,
-           expose a menu toggle to open it.
-           ------------------------- */
-        header .menu-toggle {
-            display: none; /* shown in media queries below */
-            cursor: pointer;
-            background: transparent;
-            border: none;
-            color: #fff;
-            font-size: 20px;
-            padding: 8px 12px;
-        }
-
-        /* When sidebar is hidden on smaller screens we use transform translateX */
+        /* On narrow mobile screens stack sidebar above content */
         @media (max-width: 1024px) {
-            /* Collapse the sidebar off-canvas by default */
             #sidebar {
-                transform: translateX(-110%);
-                width: 320px; /* slightly smaller on tablets */
-                box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+                position: relative;
+                width: 100%;
+                height: auto;
+                display: none !important;
             }
-            /* When open (added by JS), show it */
-            #sidebar.open {
-                transform: translateX(0);
-            }
-            /* Make wrapper use the full width */
             #wrapper {
-                margin-left: 0 !important;
+                margin-left: 0;
             }
-            /* show the menu toggle in header */
-            header .menu-toggle { display: inline-block; }
-            /* make header content align so toggle sits left of title (optional tweak) */
-            header#header { display:flex; align-items:center; gap:8px; padding:10px 16px; }
-            header#header .title { margin-left: 6px; }
-        }
-
-        /* Larger desktop - ensure sidebar visible by default */
-        @media (min-width: 1025px) {
-            #sidebar { transform: translateX(0); }
-            header .menu-toggle { display: none; }
+            /* ensure header remains fixed above everything */
+            header#header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
         }
     </style>
 </head>
@@ -339,8 +313,6 @@
 <body class="is-preload">
     <!-- Header -->
     <header id="header">
-        <!-- Menu toggle for tablet/mobile -->
-        <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open menu">☰</button>
         <a href="index.html" class="title">REVALON Biocare</a>
         <nav>
             <ul>
@@ -691,77 +663,6 @@
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
-
-    <!-- Sidebar toggle behavior for tablet/mobile -->
-    <script>
-      (function () {
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const sidebarLinks = sidebar ? sidebar.querySelectorAll('a') : [];
-        const mq = window.matchMedia('(max-width: 1024px)');
-
-        function setAria(open) {
-          if (menuToggle) menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-        }
-
-        function closeSidebar() {
-          if (!sidebar) return;
-          sidebar.classList.remove('open');
-          setAria(false);
-        }
-
-        function openSidebar() {
-          if (!sidebar) return;
-          sidebar.classList.add('open');
-          setAria(true);
-        }
-
-        // Toggle on button
-        if (menuToggle) {
-          menuToggle.addEventListener('click', function (e) {
-            if (!sidebar) return;
-            sidebar.classList.toggle('open');
-            setAria(sidebar.classList.contains('open'));
-          });
-        }
-
-        // Close sidebar when clicking a link inside (good UX on smaller screens)
-        sidebarLinks.forEach(function (link) {
-          link.addEventListener('click', function () {
-            if (mq.matches) closeSidebar();
-          });
-        });
-
-        // Close when clicking outside (for mobile/tablets)
-        document.addEventListener('click', function (e) {
-          if (!mq.matches) return; // only on narrow viewports
-          if (!sidebar || !sidebar.classList.contains('open')) return;
-          const isInside = sidebar.contains(e.target) || (menuToggle && menuToggle.contains(e.target));
-          if (!isInside) closeSidebar();
-        });
-
-        // Close on Escape
-        document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape') closeSidebar();
-        });
-
-        // On resize, ensure sidebar is visible for desktop and hidden for tablet
-        function handleResize() {
-          if (mq.matches) {
-            // ensure closed by default on tablet/phone
-            closeSidebar();
-          } else {
-            // ensure open/visible on desktop by removing off-canvas transform
-            if (sidebar) sidebar.classList.remove('open');
-            if (sidebar) sidebar.style.transform = 'translateX(0)';
-            if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
-          }
-        }
-        // initial
-        handleResize();
-        window.addEventListener('resize', handleResize);
-      })();
-    </script>
 
     <!-- Contact form small UX script -->
     <script>
