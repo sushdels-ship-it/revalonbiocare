@@ -1,4 +1,6 @@
 
+for running applicaiton locally: npm Start 
+
 for creating a free email acount 
 
 Portal --> https://dashboard.emailjs.com/admin 
