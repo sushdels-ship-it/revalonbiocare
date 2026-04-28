@@ -556,8 +556,8 @@
                         It helps improve nerve function, boosts energy, and relieves symptoms like numbness and tingling, when used as directed.</p>
                     </article>
                         <article class="feature" role="listitem">
-                        <a href="javascript:void(0);" class="image"><img src="images/QVYTTAL.jpeg" alt="Coming soon" /></a>
-                        <h3 style="text-align: center;">QvYTTAL</h3>
+                        <a href="javascript:void(0);" class="image"><img src="images/Qvytal.jpeg" alt="Coming soon" /></a>
+                        <h3 style="text-align: center;">QvYTAL</h3>
                         <p class="short">L-Carnitine 500 mg ,Omega-3 Fatty Acids 300 mg,Ubidecarenone (Coenzyme Q10) 300 mg ,Vitamin E 200 mg</p>
                         <p>Tablets combine L-Carnitine, Omega-3 fatty acids, Ubidecarenone (CoQ10), and Vitamin E to support cellular energy and heart health.
                         They are used for cardiovascular conditions, metabolic disorders, fatigue, male infertility, neurological support, and post-viral recovery.
@@ -851,6 +851,39 @@
 </script>
 
 </html>
+
+        <!-- Modal for image enlarge -->
+        <div id="imgModal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;">
+            <span id="imgModalClose" style="position:absolute;top:30px;right:50px;font-size:3rem;color:#fff;cursor:pointer;z-index:10001;">&times;</span>
+            <img id="imgModalImg" src="" alt="Enlarged image" style="max-width:90vw;max-height:80vh;box-shadow:0 0 40px #000;z-index:10000;">
+        </div>
+
+        <script>
+            // Modal enlarge for product images
+            document.addEventListener('DOMContentLoaded', function() {
+                var modal = document.getElementById('imgModal');
+                var modalImg = document.getElementById('imgModalImg');
+                var modalClose = document.getElementById('imgModalClose');
+                // Only target product images
+                document.querySelectorAll('.feature .image img').forEach(function(img) {
+                    img.addEventListener('click', function(e) {
+                        modal.style.display = 'flex';
+                        modalImg.src = img.src;
+                        modalImg.alt = img.alt;
+                    });
+                });
+                modalClose.onclick = function() {
+                    modal.style.display = 'none';
+                    modalImg.src = '';
+                };
+                modal.onclick = function(e) {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                        modalImg.src = '';
+                    }
+                };
+            });
+        </script>
 
 
 

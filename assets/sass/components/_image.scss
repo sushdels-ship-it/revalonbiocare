@@ -16,6 +16,8 @@
 			border-radius: _size(border-radius);
 			display: block;
 		}
+            transition: transform 0.3s cubic-bezier(.4,2,.6,1);
+            cursor: pointer;
 
 		&.left,
 		&.right {
@@ -32,6 +34,10 @@
 			top: 0.25em;
 		}
 
+		.feature .image img:hover {
+			transform: scale(1.2);
+			z-index: 2;
+		}
 		&.right {
 			float: right;
 			margin: 0 0 1em 1.5em;
